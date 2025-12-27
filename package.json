@@ -13,12 +13,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/m-anwarulkarim/P-M-22-practice/issues"
   },
   "homepage": "https://github.com/m-anwarulkarim/P-M-22-practice#readme",
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^25.0.3",
     "@types/pg": "^8.16.0",
     "prisma": "^7.2.0",
@@ -28,8 +29,9 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "node": "^24.12.0",
+    "express": "^5.2.1",
     "pg": "^8.16.3"
   }
 }

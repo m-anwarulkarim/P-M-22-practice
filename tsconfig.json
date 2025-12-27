@@ -2,13 +2,14 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    "rootDir": "./src",
+    // "rootDir": "./src",
     "outDir": "./dist",
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
+
     "target": "ES2023",
     "types": [],
     // For nodejs:
@@ -25,17 +26,25 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
+    // Style Options
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+
     // Recommended Options
     "strict": true,
+    "esModuleInterop": true,
+    "ignoreDeprecations": "6.0",
     // "jsx": "react-jsx",
     // "verbatimModuleSyntax": true,
-    "esModuleInterop": true,
     "isolatedModules": true,
-    "ignoreDeprecations": "6.0",
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "dist/prisma.config.ts"],
-  "exclude": ["node_modules", "dist", "generated"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "generated/prisma"]
 }
