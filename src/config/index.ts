@@ -10,4 +10,6 @@ export const configs = {
   APP_URL: process.env.APP_URL || "",
   APP_USER: process.env.APP_USER || "",
   APP_PASS: process.env.APP_PASS || "",
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || "",
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || "",
 };

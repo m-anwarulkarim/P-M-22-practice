@@ -46,6 +46,8 @@ export const auth = betterAuth({
   },
   // 3
   emailVerification: {
+    sendOnSignUp: true,
+
     sendVerificationEmail: async ({ user, url, token }, request) => {
       const customVerificationUrl = `${configs.APP_URL}/verify-email?token=${token}`;
       // console.log(
@@ -128,6 +130,13 @@ export const auth = betterAuth({
       } catch (error) {
         console.error("Critical: Email service failed", error);
       }
+    },
+  },
+  baseURL: configs.BETTER_AUTH_URL,
+  socialProviders: {
+    google: {
+      clientId: configs.GOOGLE_CLIENT_ID as string,
+      clientSecret: configs.GOOGLE_CLIENT_SECRET as string,
     },
   },
 });
