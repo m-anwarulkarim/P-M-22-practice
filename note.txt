@@ -1,0 +1,2 @@
+1. sign-up ==> A. Install the Package B.Set Environment Variables C.Configure Database D.Create Database Tables E.Authentication Methods F.set-up route handler
+2. sign-in

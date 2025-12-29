@@ -8,9 +8,9 @@ const createPost = async (payload: any) => {
     data: {
       title: payload.title,
       content: payload.content,
-      //   tags: payload.tags,
+      tags: payload.tags,
       authorId: payload.authorId,
-      //   comments: payload.comments,
+      comments: payload.comments,
     },
   });
   console.log(newPost);
