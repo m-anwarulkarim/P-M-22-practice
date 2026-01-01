@@ -142,12 +142,11 @@ export const auth = betterAuth({
       accessType: "offline",
       prompt: "select_account consent",
     },
-    facebook: {
-      clientId: configs.FACEBOOK_CLIENT_ID as string,
-      clientSecret: configs.FACEBOOK_CLIENT_SECRET as string,
-      scopes: ["email", "public_profile", "user_friends"], // Overwrites permissions
-      fields: ["user_friends"], // Extending list of fields
-    },
+    // facebook: {
+    //   clientId: configs.FACEBOOK_CLIENT_ID as string,
+    //   clientSecret: configs.FACEBOOK_CLIENT_SECRET as string,
+    //   scopes: ["email", "public_profile", "user_friends"], // Overwrites permissions
+    //   fields: ["user_friends"], // Extending list of fields
+    // },
   },
 });
-// console.log(auth);

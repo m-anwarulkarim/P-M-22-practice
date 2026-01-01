@@ -1,24 +1,29 @@
 import app from "./app";
 import { configs } from "./config";
 import { prisma } from "./lib/prisma";
+// import { connectRedis } from "./lib/redis";
 
 const PORT = configs.PORT || 5000;
-const main = async () => {
+const startServer = async () => {
   try {
     await prisma.$connect();
+    console.log("✅ Database connected");
 
-    console.log("Databse connectd seccesfyll");
-
-    app.listen(PORT, () => {
-      console.log(`Server is runing on ${PORT}`);
-    });
+    // ২. Redis ফেল করলে আমরা শুধু এরর দেখাবো, কিন্তু সার্ভার থামাবো না
+    // try {
+    //   await connectRedis();
+    //   console.log("✅ Redis connected");
+    // } catch (redisError) {
+    //   console.error("⚠️ Redis failed, but server will continue...");
+    // }
   } catch (error) {
-    console.log(error);
-
-    prisma.$disconnect();
-
+    console.error("❌ Critical error:", error);
     process.exit(1);
   }
+
+  app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
+  });
 };
 
-main();
+startServer();

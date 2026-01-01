@@ -15,4 +15,5 @@ export const configs = {
 
   FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET || "",
   FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID || "",
+  REDIS_URL: process.env.REDIS_URL || "",
 };
