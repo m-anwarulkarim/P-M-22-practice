@@ -1,26 +1,61 @@
-import { Request, Response } from "express";
 import { prisma } from "../../lib/prisma";
+import { Post } from "../../../generated/prisma/client";
 
-const createPost = async (payload: any, userId: string) => {
-  if (!payload) {
-    return "No Data Found";
-  }
+const createPost = async (
+  data: Omit<Post, "id" | "createdAt" | "updatedAt" | "authorId">,
+  userId: string
+) => {
+  console.log(data, userId);
   try {
+    if (!data) {
+      return "No Data Found";
+    }
     const newPost = await prisma.post.create({
       data: {
-        title: payload.title,
-        content: payload.content,
-        tags: payload.tags,
-        authorId: payload.authorId,
+        ...data,
+        authorId: userId,
       },
     });
 
     // console.log(newPost);
     return newPost;
   } catch (error) {
-    console.log(error);
-    return;
+    console.error("Database Error:", error);
+    throw new Error("Could not create post in database");
   }
 };
 
-export const postService = { createPost };
+const getAllPost = async (paload: { search: string }) => {
+  try {
+    const result = await prisma.post.findMany({
+      where: {
+        title: {
+          contains: paload.search,
+        },
+      },
+    });
+
+    // console.log(newPost);
+    return result;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Could not create post in database");
+  }
+};
+
+const getSinglePost = async ({ id }: { id: string }) => {
+  try {
+    const result = await prisma.post.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    // console.log(newPost);
+    return result;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Could not create post in database");
+  }
+};
+export const postService = { createPost, getAllPost, getSinglePost };

@@ -7,7 +7,7 @@ const authGurd = (...role: ROLE[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const session = await auth.api.getSession({
-        headers: req.headers as any,
+        headers: fromNodeHeaders(req.headers),
       });
       if (!session) {
         return res.status(401).json({
@@ -30,12 +30,6 @@ const authGurd = (...role: ROLE[]) => {
         role: session.user.role as string,
         emailVerified: session.user.emailVerified,
       };
-      if (!role.length) {
-        return res.status(400).json({
-          success: false,
-          message: "you dint habe token",
-        });
-      }
 
       if (role.length && !role.includes(req.user.role as ROLE)) {
         return res.status(403).json({

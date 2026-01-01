@@ -5,6 +5,8 @@ import { ROLE } from "../../types/role.type";
 
 const router = express.Router();
 
-router.post("/", authGurd(ROLE.USER), postController.createPost);
+router.post("/", authGurd(ROLE.ADMIN, ROLE.USER), postController.createPost);
+router.get("/", authGurd(ROLE.ADMIN, ROLE.USER), postController.getAllPost);
+router.get("/", authGurd(ROLE.ADMIN, ROLE.USER), postController.getSinglePost);
 
 export const postRouter = router;
