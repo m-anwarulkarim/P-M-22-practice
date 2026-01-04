@@ -1,5 +1,6 @@
 import { prisma } from "../../lib/prisma";
-import { Post } from "../../../generated/prisma/client";
+import { Post, PostStatus } from "../../../generated/prisma/client";
+import { PostWhereInput } from "../../../generated/prisma/models";
 
 const createPost = async (
   data: Omit<Post, "id" | "createdAt" | "updatedAt" | "authorId">,
@@ -24,32 +25,86 @@ const createPost = async (
     throw new Error("Could not create post in database");
   }
 };
+const getAllPost = async ({
+  search,
+  tags,
+  isFeatured,
+  status,
+  authorId,
+  page,
+  limit,
+}: {
+  search: string | undefined;
+  tags: string[] | [];
+  isFeatured: boolean | undefined;
+  status: PostStatus | undefined;
+  authorId: string | undefined;
+  page: number | 1;
+  limit: number | 5;
+}) => {
+  const andConditions: PostWhereInput[] = [];
 
-const getAllPost = async (paload: { search: string }) => {
-  try {
-    const result = await prisma.post.findMany({
-      where: {
-        title: {
-          contains: paload.search,
+  if (search) {
+    andConditions.push({
+      OR: [
+        {
+          title: {
+            contains: search,
+            mode: "insensitive",
+          },
         },
+        {
+          content: {
+            contains: search,
+            mode: "insensitive",
+          },
+        },
+        {
+          tags: {
+            has: search,
+          },
+        },
+      ],
+    });
+  }
+
+  if (tags.length > 0) {
+    andConditions.push({
+      tags: {
+        hasEvery: tags as string[],
       },
     });
-
-    // console.log(newPost);
-    return result;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Could not create post in database");
   }
+
+  if (typeof isFeatured === "boolean") {
+    andConditions.push({
+      isFeatured,
+    });
+  }
+
+  if (status) {
+    andConditions.push({
+      status,
+    });
+  }
+
+  if (authorId) {
+    andConditions.push({
+      authorId,
+    });
+  }
+
+  const allPost = await prisma.post.findMany({
+    where: {
+      AND: andConditions,
+    },
+  });
+  return allPost;
 };
 
-const getSinglePost = async ({ id }: { id: string }) => {
+const getSinglePost = async () => {
   try {
-    const result = await prisma.post.findUnique({
-      where: {
-        id: id,
-      },
-    });
+    const result = await prisma.post.findMany();
 
     // console.log(newPost);
     return result;

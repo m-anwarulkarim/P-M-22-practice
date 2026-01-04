@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { postService } from "./post.service";
+import { PostStatus } from "../../../generated/prisma/enums";
 
 const createPost = async (req: Request, res: Response) => {
   try {
@@ -30,20 +31,40 @@ const createPost = async (req: Request, res: Response) => {
     });
   }
 };
-
 const getAllPost = async (req: Request, res: Response) => {
   try {
-    const result = await postService.getAllPost(req.query.search as any);
-    console.log(result);
+    const { search } = req.query;
+    const searchString = typeof search === "string" ? search : undefined;
 
-    res.status(201).json({
-      success: true,
-      message: "Post Retrived successfully",
-      post: result,
+    const tags = req.query.tags ? (req.query.tags as string).split(",") : [];
+
+    // true or false
+    const isFeatured = req.query.isFeatured
+      ? req.query.isFeatured === "true"
+        ? true
+        : req.query.isFeatured === "false"
+        ? false
+        : undefined
+      : undefined;
+
+    const status = req.query.status as PostStatus | undefined;
+    const authorId = req.query.authorId as string | undefined;
+    const page = Number(req.query.page) as number | 1;
+    const limit = Number(req.query.limit) as number | 5;
+
+    const result = await postService.getAllPost({
+      search: searchString,
+      tags,
+      isFeatured,
+      status,
+      authorId,
+      page,
+      limit,
     });
+    res.status(200).json(result);
   } catch (e) {
     res.status(400).json({
-      error: "Post Retrived failed",
+      error: "Post creation failed",
       details: e,
     });
   }
@@ -51,10 +72,7 @@ const getAllPost = async (req: Request, res: Response) => {
 
 const getSinglePost = async (req: Request, res: Response) => {
   try {
-    console.log(req.params.id);
-    const { search } = req.query as unknown as { search: string };
-
-    const result = await postService.getAllPost({ search });
+    const result = await postService.getSinglePost();
 
     res.status(201).json({
       success: true,
