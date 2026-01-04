@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { UserRole } from "../types/role.type";
+import { ROLE } from "../types/role.type";
 
-const role = (...role: UserRole[]) => {
+const role = (...role: ROLE[]) => {
   return (req: Response, res: Request, next: NextFunction) => {
     try {
       next();
@@ -10,3 +10,5 @@ const role = (...role: UserRole[]) => {
     }
   };
 };
+
+export default role;
